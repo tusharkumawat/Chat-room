@@ -5,6 +5,7 @@ Chat Room
 ## Description
 
 A simple chat application build using Socket.io.
+[Go to application](https://boiling-river.herokuapp.com/)
 
 ### Executing program
 
