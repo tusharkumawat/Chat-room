@@ -9,8 +9,8 @@ A simple chat application build using Socket.io.
 
 ### Executing program
 
-* npm install
-* npm run start or npm run dev
+- npm install
+- npm run start or npm run dev
 
 ## Authors
 
