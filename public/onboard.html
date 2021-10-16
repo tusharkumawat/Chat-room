@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tushar's Chat Room</title>
+    <link rel="icon" href="/img/favicon.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="centered-form">
+      <div class="centered-form__box">
+        <h1>
+          Create Room
+          <form action="/chat.html">
+            <input type="text" name="username" id="username1" hidden />
+            <input type="text" name="room" placeholder="Room" required />
+            <button>Enter</button>
+          </form>
+        </h1>
+        <h2 style='color:darkgrey'>-- OR --</h2>
+        <h1>
+          Join Existing Room
+          <form action="/chat.html">
+            <input type="text" name="username" id="username2" hidden />
+            <div id="openRooms"></div>
+          </form>
+        </h1>
+      </div>
+    </div>
+    <script id="openRooms-template" type="text/html">
+      <h2 class="list-title">Rooms</h2>
+      <ul class="rooms">
+        {{#rooms}}
+        <button type="submit" name="room" value="clickme">{{rooms}}</button>
+        {{/rooms}}
+      </ul>
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/js/onboard.js"></script>
+    
+  </body>
+</html>
