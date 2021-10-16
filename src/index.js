@@ -13,6 +13,12 @@ const {
   getUsersInRoom,
 } = require("./utils/users");
 
+const {
+  rooms,
+  addRoom,
+  removeRoom,
+} = require("./utils/rooms");
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -34,6 +40,12 @@ io.on("connection", (socket) => {
     if (error) {
       return callback(error);
     }
+    const { errorName, room } = addRoom(
+      user.room
+    );
+    if(errorName){
+      console.log(errorName);
+    }
     socket.join(user.room);
     socket.emit("message", generateMessage(ADMIN, "Welcome!"));
     socket.broadcast
@@ -43,6 +55,7 @@ io.on("connection", (socket) => {
       room: user.room,
       users: getUsersInRoom(user.room),
     });
+    io.emit("openRooms", rooms);
     callback();
   });
 
@@ -73,6 +86,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
     if (user) {
+      if(getUsersInRoom(user.room) < 1){
+        removeRoom(user.room);
+      }
+      
       io.to(user.room).emit(
         "message",
         generateMessage(ADMIN, `${user.username} has left!`)
@@ -82,6 +99,11 @@ io.on("connection", (socket) => {
         users: getUsersInRoom(user.room),
       });
     }
+  });
+
+  socket.on("getRooms", (callback) => {
+    io.emit("openRooms", rooms);
+    callback();
   });
 });
 
