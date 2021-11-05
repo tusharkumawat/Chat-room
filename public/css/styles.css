@@ -97,6 +97,10 @@ button:disabled {
     width: 225px;
     overflow-y: scroll
 }
+.div-scrollbar {
+    height: 80vh;
+    overflow-y: scroll
+}
 
 /* Chat styles */
 
