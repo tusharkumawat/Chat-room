@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tushar's Chat Room</title>
+    <title>Chat Room</title>
     <link rel="icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
@@ -21,6 +21,9 @@
             <button>Send</button>
           </form>
           <button id="send-location">Send location</button>
+          <br />
+          <label for="file-upload" class="custom-file-upload"> Upload </label>
+          <input id="file-upload" type="file" />
         </div>
       </div>
     </div>
@@ -42,6 +45,22 @@
         </p>
         <p>
           <a target="_blank" href="{{locationMessage}}">My current location</a>
+        </p>
+      </div>
+    </script>
+
+    <script id="file-message-template" type="text/html">
+      <div class="message">
+        <p>
+          <span class="message__name">{{username}}</span>
+          <span class="message__meta">{{createdAt}}</span>
+        </p>
+        <p>
+          <img
+            style="width: 150px; height: auto "
+            src="{{imageSrc}}"
+            alt="{{imageText}}"
+          />
         </p>
       </div>
     </script>
