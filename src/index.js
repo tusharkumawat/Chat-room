@@ -13,11 +13,7 @@ const {
   getUsersInRoom,
 } = require("./utils/users");
 
-const {
-  rooms,
-  addRoom,
-  removeRoom,
-} = require("./utils/rooms");
+const { rooms, addRoom, removeRoom } = require("./utils/rooms");
 
 const app = express();
 const server = http.createServer(app);
@@ -40,10 +36,8 @@ io.on("connection", (socket) => {
     if (error) {
       return callback(error);
     }
-    const { errorName, room } = addRoom(
-      user.room
-    );
-    if(errorName){
+    const { errorName, room } = addRoom(user.room);
+    if (errorName) {
       console.log(errorName);
     }
     socket.join(user.room);
@@ -61,7 +55,7 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
-    const filter = new Filter();
+    // const filter = new Filter();
 
     // if(filter.isProfane(message)){
     //     return callback('Don\'t be naughty!')
@@ -69,6 +63,19 @@ io.on("connection", (socket) => {
 
     io.to(user.room).emit("message", generateMessage(user.username, message));
     callback();
+  });
+
+  socket.on("sendFile", (fileObject) => {
+    const user = getUser(socket.id);
+    io.to(user.room).emit(
+      "fileMessage",
+      generateMessage(user.username, {
+        type: fileObject.type,
+        body: Buffer.from(fileObject.body, "binary").toString("base64"),
+        mimeType: fileObject.mimeType,
+        fileName: fileObject.fileName,
+      })
+    );
   });
 
   socket.on("sendLocation", (coords, callback) => {
@@ -86,10 +93,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
     if (user) {
-      if(getUsersInRoom(user.room) < 1){
+      if (getUsersInRoom(user.room) < 1) {
         removeRoom(user.room);
       }
-      
+
       io.to(user.room).emit(
         "message",
         generateMessage(ADMIN, `${user.username} has left!`)
